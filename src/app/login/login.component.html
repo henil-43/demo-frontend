@@ -1,0 +1,29 @@
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Login Form Example</title>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" >
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="login-form">
+  <form>
+    <h1>Login</h1>
+    <div class="content">
+      <div class="input-field">
+        <input #email type="email" placeholder="Email" autocomplete="nope">
+      </div>
+      <div class="input-field">
+        <input #password type="text" placeholder="Password" autocomplete="new-password">
+      </div>
+      <br>
+      <a href="#" class="link">Forgot Your Password?</a>
+    </div>
+    <div class="action">
+        <br>
+      <button type="button" class="login-button" (click)="login(email.value, password.value)">Sign in</button>
+    </div>
+  </form>
+</div>
+
+</body>
