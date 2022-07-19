@@ -1,0 +1,44 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Signup Form Example</title>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" >
+  
+  </head>
+  <body>
+  <!-- partial:index.partial.html -->
+  <div class="signup-form">
+    <form>
+      <h1>Sign Up</h1>
+      <div class="content">
+        <div class="input-field">
+            <input #firstName type="text" placeholder="firstName" autocomplete="nope">
+          </div>
+          <div class="input-field">
+            <input #lastName type="text" placeholder="lastName" autocomplete="nope">
+          </div> 
+          <div class="input-field">
+            <input #address type="text" placeholder="address" autocomplete="nope">
+          </div> 
+        <div class="input-field">
+          <input #email type="email" placeholder="Email" autocomplete="nope">
+        </div>
+        <div class="input-field">
+          <input #password type="password" placeholder="Password" autocomplete="new-password">
+        </div>
+        <div class="input-field">
+          <input #phoneNo type="text" placeholder="phoneNo" autocomplete="nope">
+        </div>
+        <div class="input-field">
+          <input #age type="text" placeholder="age" autocomplete="nope">
+        </div>
+        <br>
+      </div>
+      <div class="action">
+          <br>
+        <button type="button" class="signup-button" (click)="signup(firstName.value, lastName.value, address.value, email.value, password.value, phoneNo.value, age.value)">Sign up</button>
+  
+      </div>
+    </form>
+  </div>
+  
+  </body>

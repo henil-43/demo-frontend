@@ -14,7 +14,7 @@
         <input #email type="email" placeholder="Email" autocomplete="nope">
       </div>
       <div class="input-field">
-        <input #password type="text" placeholder="Password" autocomplete="new-password">
+        <input #password type="password" placeholder="Password" autocomplete="new-password">
       </div>
       <br>
       <a href="#" class="link">Forgot Your Password?</a>
@@ -22,6 +22,8 @@
     <div class="action">
         <br>
       <button type="button" class="login-button" (click)="login(email.value, password.value)">Sign in</button>
+      <button type="button" class="register-button" routerLink="/signup">Register</button>
+
     </div>
   </form>
 </div>

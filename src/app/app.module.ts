@@ -10,9 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
 import { MesagesComponent } from './mesages/mesages.component';
 import { DashboardComponent } from './dashboard/dashboard.component'
-import { InMemoryDataService } from './in-memory-data.service';
+//import { InMemoryDataService } from './in-memory-data.service';
 import { HeroSearchComponent } from './hero-search/hero-search.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { GetusersComponent } from './getusers/getusers.component';
+import {MatTableModule} from "@angular/material/table";
+import { ViewuserComponent } from './viewuser/viewuser.component';
+import { EdituserComponent } from './edituser/edituser.component'
 
 @NgModule({
   declarations: [
@@ -22,16 +27,21 @@ import { LoginComponent } from './login/login.component';
     MesagesComponent,
     DashboardComponent,
     HeroSearchComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent,
+    GetusersComponent,
+    ViewuserComponent,
+    EdituserComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, {dataEncapsulation: false}
-    )
+    MatTableModule
+    // HttpClientInMemoryWebApiModule.forRoot(
+    //   InMemoryDataService, {dataEncapsulation: false}
+    // )
   ],
   providers: [],
   bootstrap: [AppComponent]
