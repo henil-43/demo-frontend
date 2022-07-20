@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -8,8 +9,9 @@ import { UsersService } from '../users.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  isLogggedIn = false
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(private usersService: UsersService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -24,6 +26,8 @@ export class LoginComponent implements OnInit {
     this.usersService.login(email, password)
     .subscribe((res: any) => {
       if(res.status == 200){
+        this.authService.saveToken(res.data.accessToken)
+        this.isLogggedIn = true;
         this.router.navigate(['/users'])
       }
       else{

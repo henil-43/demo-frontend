@@ -18,6 +18,9 @@ import { GetusersComponent } from './getusers/getusers.component';
 import {MatTableModule} from "@angular/material/table";
 import { ViewuserComponent } from './viewuser/viewuser.component';
 import { EdituserComponent } from './edituser/edituser.component'
+import { authInceptorProviders } from './auth.interceptor';
+import { ChatService } from './chat.service';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { EdituserComponent } from './edituser/edituser.component'
     SignupComponent,
     GetusersComponent,
     ViewuserComponent,
-    EdituserComponent
+    EdituserComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,7 @@ import { EdituserComponent } from './edituser/edituser.component'
     //   InMemoryDataService, {dataEncapsulation: false}
     // )
   ],
-  providers: [],
+  providers: [authInceptorProviders, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

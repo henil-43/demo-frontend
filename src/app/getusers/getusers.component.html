@@ -38,10 +38,12 @@
              <button mat-button type="button" routerLink="/user/view/{{row._id}}">View</button>
              <button mat-button type="button" routerLink="/user/edit/{{row._id}}">Edit</button>
              <button mat-button type="button" type="button" (click)="deleteUser(row._id)" >Delete</button>
-             <button mat-button type="button" >Chat</button>
+             <button mat-button type="button" (click)="toggleChatDisplay()">Chat</button>
         </mat-cell>
       </ng-container>
     
       <tr mat-header-row *matHeaderRowDef="dispColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: dispColumns;"></tr>
 </table>
+
+<app-chat *ngIf="isShown"></app-chat>

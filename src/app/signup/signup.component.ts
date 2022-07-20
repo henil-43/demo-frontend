@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -9,7 +10,8 @@ import { UsersService } from '../users.service';
 })
 export class SignupComponent implements OnInit {
 
-  constructor(private usersService: UsersService, private router: Router) { }
+  isLoggedIn = false
+  constructor(private usersService: UsersService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -30,6 +32,9 @@ export class SignupComponent implements OnInit {
     this.usersService.signup(firstName, lastName, address, email, password, updatedPhoneNo, updatedAge)
     .subscribe((res: any) =>{
       if(res.status == 200){
+        this.authService.saveToken(res.data.accessToken)
+        this.authService.saveUser(res.data)
+        this.isLoggedIn = true
         this.router.navigate(['/users']);
       }
       else{

@@ -20,4 +20,13 @@ export class AuthService {
   public getToken(){
     return sessionStorage.getItem('access_token')
   }
+
+  public saveUser(user: any){
+    window.sessionStorage.removeItem('user');
+    window.sessionStorage.setItem('user', JSON.stringify(user));
+  }
+
+  public getUser(): any{
+    return JSON.parse(String(sessionStorage.getItem('user')))
+  }
 }

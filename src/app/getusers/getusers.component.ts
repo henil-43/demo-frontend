@@ -14,6 +14,7 @@ export class GetusersComponent implements OnInit {
     this.getUsers()
   }
   data = []
+  isShown = false
   getUsers(){
     this.usersService.getUsers()
     .subscribe((res: any) => {
@@ -28,6 +29,9 @@ export class GetusersComponent implements OnInit {
     .subscribe()
 
     this.data = this.data.filter((h: any) => h._id!== id)
+  }
+  toggleChatDisplay(){
+    this.isShown = true;
   }
 
 }
