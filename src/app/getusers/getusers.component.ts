@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChatComponent } from '../chat/chat.component';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class GetusersComponent implements OnInit {
   }
   data = []
   isShown = false
+  id = ""
   getUsers(){
     this.usersService.getUsers()
     .subscribe((res: any) => {
@@ -31,7 +33,12 @@ export class GetusersComponent implements OnInit {
     this.data = this.data.filter((h: any) => h._id!== id)
   }
   toggleChatDisplay(){
-    this.isShown = true;
+    this.isShown = !this.isShown;
+    console.log("ab abcba absvb :",this.isShown);
+  }
+
+  setId(id: any){
+    this.id = id
   }
 
 }

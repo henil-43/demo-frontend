@@ -111,7 +111,7 @@
   }
   .right-msg .msg-bubble {
     background: var(--right-msg-bg);
-    color: #fff;
+    color: #000000;
     border-bottom-right-radius: 0;
   }
   .right-msg .msg-img {

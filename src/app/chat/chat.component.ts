@@ -3,6 +3,8 @@ import { ChatService } from '../chat.service';
 import * as io from 'socket.io-client'
 import { AuthService } from '../auth.service';
 import { ActivatedRoute } from '@angular/router';
+import { GetusersComponent } from '../getusers/getusers.component';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -10,27 +12,65 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ChatComponent implements OnInit {
 
-  // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
-  chats: any;
-  // joinned: boolean = false; 
-  // newUser = {roomName: '', roomId:''};
-  // msgData = {roomId: "", roomName: "", message: ""}
-  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, ) { }
+  chats:any = [];
+  roomId = "";
+  id: string = "";
+  user:any = {};
+  socket = io.io('http://localhost:8080')
+
+  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, private getUsers: GetusersComponent) { }
 
   ngOnInit(): void {
     var user = this.authService.getUser();
-    if(user != null){
-      
-    }
+    this.user = user
+    this.id = this.getUsers.id
+    this.getChats()
 
+    this.socket.on('new-message', (data) => {
+      this.chats.push(data)
+
+    })
   }
-
-  getChats(){
-    var user = this.authService.getUser();
-    
-
-    //this.chatService.getChatByRoom()
-  }
-
   
+  async getChats(){
+
+    var temp1 = this.user.id + '-' + this.getUsers.id;
+    this.chatService.getChatByRoom(temp1)
+    .subscribe((res: any) => {
+      console.log(res.data)
+      if(res.data.length != 0){
+        this.roomId = temp1;
+        this.chats = res.data
+      }
+    })
+      
+    var temp2 = this.getUsers.id + '-' + this.user.id;
+    this.chatService.getChatByRoom(temp2)
+    .subscribe((resp: any) => {
+      console.log("abc: ", resp.data)
+      if(resp.data.length != 0){
+        this.roomId = temp2;
+        this.chats = resp.data
+      }
+    })
+  }
+
+  sendMessage(message: string){
+    message = message.trim()
+    if(this.roomId && this.roomId != undefined && this.roomId != ""){ 
+      console.log("Hiii2: ", this.roomId)
+      this.chatService.saveMessage(this.roomId, message, this.user.firstName)
+      .subscribe((res: any) => {
+        this.socket.emit('save-message', res)
+        console.log(res)
+      })
+    }
+    else{
+      this.roomId = this.user.id + '-' + this.getUsers.id
+      this.chatService.saveMessage(this.roomId,message, this.user.firstName)
+      .subscribe((res: any) => {
+        console.log(res)
+      })
+    }
+  }
 }

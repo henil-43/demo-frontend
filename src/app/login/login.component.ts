@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
     .subscribe((res: any) => {
       if(res.status == 200){
         this.authService.saveToken(res.data.accessToken)
+        this.authService.saveUser(res.data)
         this.isLogggedIn = true;
         this.router.navigate(['/users'])
       }
