@@ -27,7 +27,12 @@ export class ChatComponent implements OnInit {
     this.getChats()
 
     this.socket.on('new-message', (data) => {
-      this.chats.push(data)
+      console.log(data)
+      if(data.data.roomId == this.user.id + '-' + this.getUsers.id || this.getUsers.id + '-' + this.user.id){
+        console.log("Hiii in room!!!: ", this.roomId)
+        this.chats.push(data.data)
+
+      }
 
     })
   }
@@ -71,6 +76,11 @@ export class ChatComponent implements OnInit {
       .subscribe((res: any) => {
         console.log(res)
       })
+      this.getChats()
     }
+  }
+
+  closePopup(){
+    this.getUsers.closePopup()
   }
 }

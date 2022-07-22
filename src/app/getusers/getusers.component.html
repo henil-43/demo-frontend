@@ -38,7 +38,7 @@
              <button mat-button type="button" routerLink="/user/view/{{row._id}}">View</button>
              <button mat-button type="button" routerLink="/user/edit/{{row._id}}">Edit</button>
              <button mat-button type="button" type="button" (click)="deleteUser(row._id)" >Delete</button>
-             <button mat-button type="button" (click)="toggleChatDisplay(); setId(row._id)">Chat</button>
+             <button mat-button type="button" *ngIf="row._id != this.user.id" (click)="toggleChatDisplay(); setId(row._id)">Chat</button>
         </mat-cell>
       </ng-container>
     
@@ -47,4 +47,3 @@
 </table>
 
 <app-chat *ngIf="isShown"></app-chat>
-<button *ngIf="isShown" type="button" (click)="toggleChatDisplay();">x</button>

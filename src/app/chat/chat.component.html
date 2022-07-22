@@ -1,16 +1,17 @@
 <section class="msger">
     <header class="msger-header">
-      <div class="msger-header-title" *ngIf="chats.length > 0">
-        <i class="fas fa-comment-alt"></i> {{chats[0].roomId}}
+      <div class="msger-header-title">
+        <i class="fas fa-comment-alt"></i> {{ ( chats.length > 0 && chats[0].roomId != "" && chats[0].roomId != undefined && chats[0].roomId != null)?chats[0].roomId:"Group Chat"  }}
       </div>
       <div class="msger-header-options">
         <span><i class="fas fa-cog"></i></span>
+        <button type="button" (click)="this.closePopup()">x</button>
       </div>
     </header>
   
-    <main class="msger-chat" *ngIf="chats.length !== 0">
+    <main class="msger-chat" *ngIf="chats.length !== 0" #scrollMe [scrollTop]="scrollMe.scrollHeight">
       <div *ngFor="let chat of chats">
-      <div class="msg left-msg" *ngIf="user.firstName !== chat.from">
+      <div class="msg left-msg" *ngIf="user.firstName !== chat.from && (chat.roomId == (this.user.id + '-' + this.id) || chat.roomId == (this.id + '-' + this.user.id) )" >
         <div
          class="msg-img"
          style="background-image: url(https://image.flaticon.com/icons/svg/327/327779.svg)"
@@ -28,7 +29,7 @@
         </div>
       </div>
   
-      <div class="msg right-msg" *ngIf="user.firstName === chat.from">
+      <div class="msg right-msg" *ngIf="user.firstName === chat.from  && (chat.roomId == (this.user.id + '-' + this.id) || chat.roomId == (this.id + '-' + this.user.id) )">
         <div
          class="msg-img"
          style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
@@ -50,6 +51,8 @@
   
     <form class="msger-inputarea">
       <input #message type="text" class="msger-input" placeholder="Enter your message...">
-      <button type="submit" class="msger-send-btn" (click)="sendMessage(message.value)">Send</button>
+      <button type="submit" class="msger-send-btn" (click)="sendMessage(message.value); message.value = '' ">Send</button>
     </form>
+
+
   </section>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../users.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +12,7 @@ import { UsersService } from '../users.service';
 export class SignupComponent implements OnInit {
 
   isLoggedIn = false
-  constructor(private usersService: UsersService, private router: Router, private authService: AuthService) { }
+  constructor(private usersService: UsersService, private router: Router, private authService: AuthService, private location: Location) { }
 
   ngOnInit(): void {
   }
@@ -41,6 +42,10 @@ export class SignupComponent implements OnInit {
         console.log(res);
       }
     } );
+  }
+
+  goBack(){
+    this.location.back()
   }
 
 }

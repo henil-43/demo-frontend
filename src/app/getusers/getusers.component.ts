@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../auth.service';
 import { ChatComponent } from '../chat/chat.component';
 import { UsersService } from '../users.service';
 
@@ -9,14 +10,18 @@ import { UsersService } from '../users.service';
 })
 export class GetusersComponent implements OnInit {
 
-  constructor(private usersService: UsersService) { }
-
-  ngOnInit(): void {
-    this.getUsers()
-  }
+  constructor(private usersService: UsersService, private authService: AuthService) { }
+  
   data = []
   isShown = false
   id = ""
+  user: any
+
+  ngOnInit(): void {
+    this.user = this.authService.getUser()
+    this.getUsers()
+  }
+
   getUsers(){
     this.usersService.getUsers()
     .subscribe((res: any) => {
@@ -33,8 +38,11 @@ export class GetusersComponent implements OnInit {
     this.data = this.data.filter((h: any) => h._id!== id)
   }
   toggleChatDisplay(){
-    this.isShown = !this.isShown;
-    console.log("ab abcba absvb :",this.isShown);
+    this.isShown = true;
+  }
+
+  closePopup(){
+    this.isShown = false
   }
 
   setId(id: any){
