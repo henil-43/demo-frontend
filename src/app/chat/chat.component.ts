@@ -4,6 +4,7 @@ import * as io from 'socket.io-client'
 import { AuthService } from '../auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GetusersComponent } from '../getusers/getusers.component';
+import { UsersService } from '../users.service';
 
 @Component({
   selector: 'app-chat',
@@ -16,30 +17,52 @@ export class ChatComponent implements OnInit {
   roomId = "";
   id: string = "";
   user:any = {};
+  clickedUser: any = {}
+  status:any
   socket = io.io('http://localhost:8080')
 
-  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, private getUsers: GetusersComponent) { }
+  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, private usersService: UsersService , private getUsers: GetusersComponent) { }
 
   ngOnInit(): void {
     var user = this.authService.getUser();
     this.user = user
-    this.id = this.getUsers.id
+    this.id = this.getUsers.clickedUser._id
+    this.clickedUser = this.getUsers.clickedUser
+    this.getUserDetails(this.getUsers.clickedUser._id)
+    console.log("sgbrswg ngrlswng swogna ",this.getUsers.clickedUser)
     this.getChats()
 
     this.socket.on('new-message', (data) => {
       console.log(data)
-      if(data.data.roomId == this.user.id + '-' + this.getUsers.id || this.getUsers.id + '-' + this.user.id){
+      if(data.data.roomId == this.user.id + '-' + this.getUsers.clickedUser._id || this.getUsers.clickedUser._id + '-' + this.user.id){
         console.log("Hiii in room!!!: ", this.roomId)
         this.chats.push(data.data)
 
       }
 
     })
+
+    this.socket.on('status-changed', (data) => {
+      console.log(data)
+      if(this.getUsers.clickedUser._id == data.data.userId){
+        this.status = data.data.status
+
+      }
+    })
   }
   
+
+  getUserDetails(id: any){
+    this.usersService.getUserById(id)
+    .subscribe((res: any) => {
+      console.log(res.data)
+      this.status = res.data.status
+    })
+  }
+
   async getChats(){
 
-    var temp1 = this.user.id + '-' + this.getUsers.id;
+    var temp1 = this.user.id + '-' + this.getUsers.clickedUser._id;
     this.chatService.getChatByRoom(temp1)
     .subscribe((res: any) => {
       console.log(res.data)
@@ -49,7 +72,7 @@ export class ChatComponent implements OnInit {
       }
     })
       
-    var temp2 = this.getUsers.id + '-' + this.user.id;
+    var temp2 = this.getUsers.clickedUser._id + '-' + this.user.id;
     this.chatService.getChatByRoom(temp2)
     .subscribe((resp: any) => {
       console.log("abc: ", resp.data)
@@ -71,10 +94,11 @@ export class ChatComponent implements OnInit {
       })
     }
     else{
-      this.roomId = this.user.id + '-' + this.getUsers.id
+      this.roomId = this.user.id + '-' + this.getUsers.clickedUser._id
       this.chatService.saveMessage(this.roomId,message, this.user.firstName)
       .subscribe((res: any) => {
         console.log(res)
+        this.socket.emit('save-message', res)
       })
       this.getChats()
     }
@@ -82,5 +106,9 @@ export class ChatComponent implements OnInit {
 
   closePopup(){
     this.getUsers.closePopup()
+  }
+
+  toggleOnlineStatus(id:any, status: any){
+    this.getUsers.toggleOnlineStatus(id, status)
   }
 }

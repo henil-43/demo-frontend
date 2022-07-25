@@ -11,13 +11,6 @@ export class ChatService {
   constructor(private http: HttpClient) { }
 
   getChatByRoom(id: any): Observable<any>{
-    // var data: any = []
-    // var roomId: any = ""
-    // var temp1 = id1 + '-' + id2;
-    // var temp2 = id2 + '-' + id1;
-
-    // console.log("temp1: ", temp1)
-    // console.log("temp2: ", temp2)
 
     return this.http.get(this.rootUrl+`/chats/${id}`)
     .pipe(tap(_ => console.log("123456778")),
@@ -26,24 +19,6 @@ export class ChatService {
       return throwError(err)
     }))
 
-    // this.http.get(this.rootUrl+`/chats/${temp2}`)
-    // .pipe(tap((chats: any) => {
-    //   console.log("Hii1111", chats.data)
-    //   if(chats.data && chats.data.length != 0){
-    //     roomId = temp2
-    //     data.push(chats.data)
-    //   }
-    // }),
-    // catchError((err) => {
-    //   console.log(err)
-    //   return throwError(err)
-    // })
-    // ).subscribe()
-
-    // return of({
-    //   roomId: roomId,
-    //   chats: data
-    // })
   }
 
   saveMessage(roomId: string, message: string, from: string){

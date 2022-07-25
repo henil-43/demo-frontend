@@ -98,4 +98,14 @@ export class UsersService {
     }))
   }
 
+  changeStatus(id: any, status: any){
+    return this.http.put(this.rootUrl + `/toggle-status/${id}`, {status: status},this.httpOptions)
+    .pipe(tap((data) => console.log(data)),
+    catchError((err) => {
+      this.log(err.error.message)
+      return throwError(err);
+    })
+    )
+  }
+
 }

@@ -1,11 +1,15 @@
 <section class="msger">
     <header class="msger-header">
       <div class="msger-header-title">
-        <i class="fas fa-comment-alt"></i> {{ ( chats.length > 0 && chats[0].roomId != "" && chats[0].roomId != undefined && chats[0].roomId != null)?chats[0].roomId:"Group Chat"  }}
+        <b style="color: #000000;">{{this.clickedUser.firstName + " " + this.clickedUser.lastName}}</b>
+        <br> 
+        <i class="fas fa-comment-alt"></i> {{ ( chats.length > 0 && chats[0].roomId != "" && chats[0].roomId != undefined && chats[0].roomId != null)?chats[0].roomId:"Chat"  }}
+        <i class="fas fa-comment-alt"></i> {{this.status?"Online":"Offline"}}
+        
       </div>
       <div class="msger-header-options">
         <span><i class="fas fa-cog"></i></span>
-        <button type="button" (click)="this.closePopup()">x</button>
+        <button type="button" (click)="this.closePopup(); this.toggleOnlineStatus(this.user.id, false)">x</button>
       </div>
     </header>
   
