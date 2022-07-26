@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { ChatSocketService } from '../chat-socket.service';
 import { UsersService } from '../users.service';
 
 @Component({
@@ -11,9 +12,10 @@ import { UsersService } from '../users.service';
 export class LoginComponent implements OnInit {
   isLogggedIn = false
 
-  constructor(private usersService: UsersService, private router: Router, private authService: AuthService) { }
+  constructor(private usersService: UsersService, private chatSocketService: ChatSocketService, private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.toggleOnlineStatus(this.authService.getUser().id, false)
   }
 
   login(email: string, password: string){
@@ -36,6 +38,13 @@ export class LoginComponent implements OnInit {
       }
     })
 
+  }
+
+  toggleOnlineStatus(id: any, status: any){
+    this.usersService.changeStatus(id, status)
+    .subscribe((res: any) => {
+      this.chatSocketService.socket.emit('update-status', res)
+    })
   }
 
 

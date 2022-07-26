@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { ChatSocketService } from '../chat-socket.service';
 import { ChatComponent } from '../chat/chat.component';
 import { UsersService } from '../users.service';
-import * as io from 'socket.io-client'
 
 @Component({
   selector: 'app-getusers',
@@ -11,18 +11,17 @@ import * as io from 'socket.io-client'
 })
 export class GetusersComponent implements OnInit {
 
-  constructor(private usersService: UsersService, private authService: AuthService) { }
+  constructor(private usersService: UsersService, private authService: AuthService, private chatSocketService: ChatSocketService) { }
   
   data = []
   isShown = false
   clickedUser: any
   user: any
-  socket = io.io('http://localhost:8080')
-
 
   ngOnInit(): void {
     this.user = this.authService.getUser()
     this.getUsers()
+    this.toggleOnlineStatus(this.authService.getUser().id, false)
   }
 
   getUsers(){
@@ -55,7 +54,7 @@ export class GetusersComponent implements OnInit {
   toggleOnlineStatus(id: any, status: any){
     this.usersService.changeStatus(id, status)
     .subscribe((res: any) => {
-      this.socket.emit('update-status', res)
+      this.chatSocketService.socket.emit('update-status', res)
     })
   }
 

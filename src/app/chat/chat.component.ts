@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ChatService } from '../chat.service';
-import * as io from 'socket.io-client'
 import { AuthService } from '../auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { GetusersComponent } from '../getusers/getusers.component';
 import { UsersService } from '../users.service';
+import { ChatSocketService } from '../chat-socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -19,9 +19,8 @@ export class ChatComponent implements OnInit {
   user:any = {};
   clickedUser: any = {}
   status:any
-  socket = io.io('http://localhost:8080')
 
-  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, private usersService: UsersService , private getUsers: GetusersComponent) { }
+  constructor(private route: ActivatedRoute,private chatService: ChatService, private authService: AuthService, private usersService: UsersService , private getUsers: GetusersComponent, private chatSocketService: ChatSocketService) { }
 
   ngOnInit(): void {
     var user = this.authService.getUser();
@@ -32,7 +31,8 @@ export class ChatComponent implements OnInit {
     console.log("sgbrswg ngrlswng swogna ",this.getUsers.clickedUser)
     this.getChats()
 
-    this.socket.on('new-message', (data) => {
+    
+    this.chatSocketService.socket.on('new-message', (data) => {
       console.log(data)
       if(data.data.roomId == this.user.id + '-' + this.getUsers.clickedUser._id || this.getUsers.clickedUser._id + '-' + this.user.id){
         console.log("Hiii in room!!!: ", this.roomId)
@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
 
     })
 
-    this.socket.on('status-changed', (data) => {
+    this.chatSocketService.socket.on('status-changed', (data) => {
       console.log(data)
       if(this.getUsers.clickedUser._id == data.data.userId){
         this.status = data.data.status
@@ -89,7 +89,7 @@ export class ChatComponent implements OnInit {
       console.log("Hiii2: ", this.roomId)
       this.chatService.saveMessage(this.roomId, message, this.user.firstName)
       .subscribe((res: any) => {
-        this.socket.emit('save-message', res)
+        this.chatSocketService.socket.emit('save-message', res)
         console.log(res)
       })
     }
@@ -98,7 +98,7 @@ export class ChatComponent implements OnInit {
       this.chatService.saveMessage(this.roomId,message, this.user.firstName)
       .subscribe((res: any) => {
         console.log(res)
-        this.socket.emit('save-message', res)
+        this.chatSocketService.socket.emit('save-message', res)
       })
       this.getChats()
     }

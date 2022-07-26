@@ -4,6 +4,7 @@
         <b style="color: #000000;">{{this.clickedUser.firstName + " " + this.clickedUser.lastName}}</b>
         <br> 
         <i class="fas fa-comment-alt"></i> {{ ( chats.length > 0 && chats[0].roomId != "" && chats[0].roomId != undefined && chats[0].roomId != null)?chats[0].roomId:"Chat"  }}
+        <br> 
         <i class="fas fa-comment-alt"></i> {{this.status?"Online":"Offline"}}
         
       </div>

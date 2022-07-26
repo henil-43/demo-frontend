@@ -42,7 +42,7 @@ import { ChatComponent } from './chat/chat.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
     // HttpClientInMemoryWebApiModule.forRoot(
     //   InMemoryDataService, {dataEncapsulation: false}
     // )
