@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ViewuserComponent } from './viewuser/viewuser.component';
 import { AuthGuard } from './auth/auth.guard'
+import { FormBuilderComponent } from './form-builder/form-builder.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'users', component: GetusersComponent,canActivate: [AuthGuard]},
   {path: 'user/view/:id', component: ViewuserComponent,canActivate: [AuthGuard]},
   {path: 'user/edit/:uid', component: EdituserComponent,canActivate: [AuthGuard]},
+  {path: 'form-builder', component: FormBuilderComponent}
 ];
 
 @NgModule({
