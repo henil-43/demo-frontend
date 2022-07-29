@@ -1,0 +1,109 @@
+<!-- The Modal -->
+<div id="myModal" class="modal" *ngIf="isVisible">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close" (click)="isVisible=false;">&times;</span>
+        <h2>Input properties updater</h2>
+      </div>
+      <div class="modal-body">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+            <div *ngIf="this.currentDraggedItem.previousIndex == 0">
+                Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/><br/>
+            </div>
+            <div *ngIf="this.currentDraggedItem.previousIndex == 1">
+                Place holder: <input type="text" [(ngModel)]="popup.placeholder" name="placeholder"/><br/><br/><br/>                
+            </div>
+            <div *ngIf="this.currentDraggedItem.previousIndex == 2">
+                Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/><br/>
+                Place holder: <input type="text" [(ngModel)]="popup.placeholder" name="placeholder"/><br/><br/><br/>                
+            </div>
+        <button type="submit" class="btn btn-success" [disabled]="!f.form.valid">Submit</button>
+        </form >
+      </div>
+      <div class="modal-footer">
+        <h3>Modal Footer</h3>
+      </div>
+    </div>
+  
+  </div>
+  <!-- {{now}} -->
+  <h3>Complete Demo</h3>
+  <p>This is a complete demo that features drop scopes, custom styling, disable drag/drop & drag handles.</p>
+  <hr>
+  
+  <!-- <div class="row">
+  
+      <div class="col-sm-3">
+          <div class="card card-outline-success mb-3">
+              <div class="card-header card-inverse card-success">
+                  Input Items
+              </div>
+              <div class="card-block scroll-list">
+                  <div class="example-list list-group" cdkDropList #todoList="cdkDropList" [cdkDropListData]="htmlItems" [cdkDropListConnectedTo]="[doneList]">
+                      <div class="example-box list-group-item list-group-item-action list-group-item-success" *ngFor="let item of htmlItems" cdkDrag>
+                          {{item.name}}
+                      </div>
+                  </div>
+              </div>
+            </div>
+      </div>
+  
+      <div>
+          <div class="card card-outline-primary mb-3">
+              <div class="card-header card-inverse card-primary">Drop the controls on the form</div>
+              <div class="card-block scroll-list" id="formContent" style="background-color: beige;">
+                      <div class="example-container" cdkDropList #doneList="cdkDropList" [cdkDropListData]="droppedItems" [cdkDropListConnectedTo]="[todoList]" (cdkDropListDropped)="drop($event)">
+                          <div *ngFor="let item of droppedItems" class="example-list">
+                            <div class="example-box">
+                              <input [type]="item.inputType" [placeholder]="item.placeholder" *ngIf="item.inputType !== 'label'">
+                              <label *ngIf="item.inputType === 'label'"></label>
+                              <label *ngIf="item.displayText"></label>
+                            </div>
+                          </div>						 
+                      </div>
+            <div [innerHTML]="test"></div>
+              </div>
+          </div>
+      </div>
+      <div class="col-sm-4">
+      {{test}}
+      </div>
+  </div> -->
+
+<div class="example-container">
+    <div class="card-header card-inverse card-success">Input Elements</div>
+    <div class="card card-outline-success mb-3">
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [cdkDropListData]="htmlItems"
+      [cdkDropListConnectedTo]="[doneList]"
+      (cdkDropListDropped)="drop($event)"
+      class="example-list"
+    >
+      <div class="example-box" *ngFor="let item of htmlItems" cdkDrag>{{item.name}}</div>
+    </div>
+  </div>
+</div>
+
+  <div class="example-container">
+    <div class="card-header card-inverse card-primary">Done</div>
+    <div class="card card-outline-primary mb-3">
+    <div
+      cdkDropList
+      #doneList="cdkDropList"
+      [cdkDropListData]="droppedItems"
+      [cdkDropListConnectedTo]="[todoList]"
+      (cdkDropListDropped)="drop($event)"
+      class="example-list">
+      <div class="example-box" *ngFor="let item of droppedItems" cdkDrag>
+        <input [type]="item.inputType" [placeholder]="item.placeholder" [name]="item.displayText" *ngIf="item.inputType !== 'label'">
+            <label *ngIf="item.inputType === 'label' && item.displayText">{{item.displayText}}</label>
+            
+      </div>
+    </div>
+  </div>
+</div>
+  
