@@ -9,16 +9,34 @@
       </div>
       <div class="modal-body">
         <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-            <div *ngIf="this.currentDraggedItem.previousIndex == 0">
+            <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'label'">
                 Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/><br/>
             </div>
-            <div *ngIf="this.currentDraggedItem.previousIndex == 1">
+            <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'text'">
                 Place holder: <input type="text" [(ngModel)]="popup.placeholder" name="placeholder"/><br/><br/><br/>                
             </div>
-            <div *ngIf="this.currentDraggedItem.previousIndex == 2">
-                Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/><br/>
+            <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'checkbox'">
+                Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/>
                 Place holder: <input type="text" [(ngModel)]="popup.placeholder" name="placeholder"/><br/><br/><br/>                
             </div>
+            <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'radio'">
+              Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/>
+              Value: <input type="text" [(ngModel)]="popup.value" name="value"/><br/><br/><br/>                
+            </div>
+          <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'button'">
+            Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/>
+            Type: <select name="type" [(ngModel)]="popup.type">
+              <option value="submit" >submit</option>
+              <option value="reset">reset</option>
+            </select>
+          </div>
+          <div *ngIf="this.currentDraggedItem.previousContainer.data[this.currentDraggedItem.previousIndex].name == 'textarea'">
+            Name: <input type="text" [(ngModel)]="popup.name" name="name"/><br/><br/>
+            Place holder: <input type="text" [(ngModel)]="popup.placeholder" name="placeholder"/><br/><br/>
+            Rows: <input type="text" [(ngModel)]="popup.rows" name="rows"/><br/><br/>
+            Columns: <input type="text" [(ngModel)]="popup.columns" name="columns"/><br/><br/><br/>                
+          </div>
+
         <button type="submit" class="btn btn-success" [disabled]="!f.form.valid">Submit</button>
         </form >
       </div>
@@ -32,45 +50,7 @@
   <h3>Complete Demo</h3>
   <p>This is a complete demo that features drop scopes, custom styling, disable drag/drop & drag handles.</p>
   <hr>
-  
-  <!-- <div class="row">
-  
-      <div class="col-sm-3">
-          <div class="card card-outline-success mb-3">
-              <div class="card-header card-inverse card-success">
-                  Input Items
-              </div>
-              <div class="card-block scroll-list">
-                  <div class="example-list list-group" cdkDropList #todoList="cdkDropList" [cdkDropListData]="htmlItems" [cdkDropListConnectedTo]="[doneList]">
-                      <div class="example-box list-group-item list-group-item-action list-group-item-success" *ngFor="let item of htmlItems" cdkDrag>
-                          {{item.name}}
-                      </div>
-                  </div>
-              </div>
-            </div>
-      </div>
-  
-      <div>
-          <div class="card card-outline-primary mb-3">
-              <div class="card-header card-inverse card-primary">Drop the controls on the form</div>
-              <div class="card-block scroll-list" id="formContent" style="background-color: beige;">
-                      <div class="example-container" cdkDropList #doneList="cdkDropList" [cdkDropListData]="droppedItems" [cdkDropListConnectedTo]="[todoList]" (cdkDropListDropped)="drop($event)">
-                          <div *ngFor="let item of droppedItems" class="example-list">
-                            <div class="example-box">
-                              <input [type]="item.inputType" [placeholder]="item.placeholder" *ngIf="item.inputType !== 'label'">
-                              <label *ngIf="item.inputType === 'label'"></label>
-                              <label *ngIf="item.displayText"></label>
-                            </div>
-                          </div>						 
-                      </div>
-            <div [innerHTML]="test"></div>
-              </div>
-          </div>
-      </div>
-      <div class="col-sm-4">
-      {{test}}
-      </div>
-  </div> -->
+
 
 <div class="example-container">
     <div class="card-header card-inverse card-success">Input Elements</div>
@@ -89,7 +69,7 @@
 </div>
 
   <div class="example-container">
-    <div class="card-header card-inverse card-primary">Done</div>
+    <div class="card-header card-inverse card-primary">Added  Elements</div>
     <div class="card card-outline-primary mb-3">
     <div
       cdkDropList
@@ -99,11 +79,14 @@
       (cdkDropListDropped)="drop($event)"
       class="example-list">
       <div class="example-box" *ngFor="let item of droppedItems" cdkDrag>
-        <input [type]="item.inputType" [placeholder]="item.placeholder" [name]="item.displayText" *ngIf="item.inputType !== 'label'">
-            <label *ngIf="item.inputType === 'label' && item.displayText">{{item.displayText}}</label>
-            
+        <input [type]="item.inputType" [placeholder]="item.placeholder" [name]="item.displayText" [value]="item.value" *ngIf="item.name !== 'label' && item.name !== 'button' && item.name !== 'textarea'">
+        <label *ngIf="item.inputType === 'label' && item.displayText">{{item.displayText}}</label>
+        <button [type]="item.type" *ngIf="item.name == 'button'" >{{item.displayText}}</button>    
+        <textarea [rows]="item.rows" [cols]="item.cols" [name]="item.displayText" *ngIf="item.name == 'textarea'">{{item.placeholder}}</textarea>
       </div>
     </div>
   </div>
 </div>
-  
+
+<button type="submit" (click)="generateHTMLCode()">Generate HTML</button>
+<div *ngIf="htmlText != undefined" [innerText]="htmlText"></div>  
